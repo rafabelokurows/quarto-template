@@ -1,0 +1,113 @@
+---
+title: "Report com Quarto"
+format: 
+  revealjs:
+    theme: dark
+    logo: logo.png
+    footer: "Texto comum da empresa"
+editor: visual
+---
+
+## Quarto
+
+![](cat.jpg){height=400}
+<p style="text-align: center;">This is a cat</p>
+
+
+## Slide com bullets
+
+Lista:  
+
+-   Item 1
+-   Item 2
+
+## Código
+
+Exemplo de código:  
+
+```{r,echo=T}
+1 + 1
+```
+
+@fig-airquality further explores the impact of temperature on ozone level.
+
+```{r}
+#| label: fig-airquality
+#| fig-cap: Temperature and ozone level.
+#| warning: false
+
+library(ggplot2)
+library(tidyverse)
+
+ggplot(airquality, aes(Temp, Ozone)) + geom_point() + geom_smooth(method = "loess")
+```
+
+## Slide 2
+
+Aqui vai um texto que pode ser útil
+
+```{r}
+head(airquality)
+```
+
+```{r}
+ggplot(airquality, ## Dataset is the airquality one that comes with R
+       
+        aes(Ozone, Temp)) + ## Here we specify that we'll be showing Ozone on the x-axis and Temperature on the y-axis
+        
+        geom_point( color = "steelblue", size = 3, alpha = 0.5) + ## Here we make the datapoints blue and quite transparent, in order to easily understand if multiple points are plotted on top of one another
+        
+        facet_grid(. ~ Month) + ## Here we tell ggplot2 to split the data by the Month in question. Without this argument there would be one plot with the points from all months shown together
+        
+        geom_smooth(method = "lm")
+```
+
+## Mais um slide
+
+```{r}
+stat_box_data <- function(y, upper_limit = 200) {
+  return( 
+    data.frame(
+      y = 0.95 * upper_limit,
+      label = paste('count =', length(y))
+    )
+  )
+}
+
+airquality$Month[airquality$Month == 5]<- "May"
+airquality$Month[airquality$Month == 6]<- "June"
+airquality$Month[airquality$Month == 7]<- "July"
+airquality$Month[airquality$Month == 8]<- "August"
+airquality$Month[airquality$Month == 9]<- "September"
+airquality$Month<-factor(airquality$Month, levels=c("May", "June","July", "August", "September"))
+
+airquality %>%
+  ggplot(aes(Month, Temp, fill = Month)) + 
+  ggtitle("Temperatures") +
+  xlab("Months") +
+  ylab("Frequency") +
+  geom_boxplot() +
+  scale_fill_viridis_d(name = "Month", labels = c("May", "June","July", "August", "September")) +
+  stat_summary(fun.y=mean,geom="point",color="black",fill="white",shape=21,show.legend = F) 
+```
+## Lista e nota
+
+- Green ^[A footnote]
+- Brown
+- Purple
+
+::: aside
+Some additional commentary of more peripheral interest.
+:::
+
+## Mapa Leaflet
+
+```{r}
+library(sf)
+library(leaflet)
+teste = st_read("C:\\Users\\rafae\\Downloads\\map (1).geojson",quiet=T)
+leaflet(teste) %>% 
+  addTiles() %>% 
+  leaflet::addPolygons()
+```
+
