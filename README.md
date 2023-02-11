@@ -1,4 +1,4 @@
-# Template com Quarto e R
+# Template with Quarto and R
 
 Template for creating Quarto presentations using R
 
